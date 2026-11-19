@@ -1,0 +1,225 @@
+https://www.tpointtech.com/spring-boot-annotations
+
+1) @SpringBootApplication
+-------------------------
+This annotation is used to mark the main class of springBootApp.
+    - It includes
+       1)@SpringBootConfiguration - Provides Configuration for the SpringBootApp
+       2)@SpringBootAutoConfiguration - Provides auto-config based on dependencies and application.properties
+                                   - Avoids XML old configuration
+       3)@ComponentScan ----to scan the base packges
+
+2)@RestController ---json/xml format
+-----------------
+Used to create RESTful web-services and automatically return in json  or xml format.
+ - It Includes
+    1) @Controller - returns only HTML or page format
+    2) @ResponseBody - server browser side ----json eg: current Order object fro this app.
+
+3)@RequestBody
+-------------
+browser side ---json format
+eg : If you want to save Order class details like below using postman/bruno(POST,PUT)
+   {
+    "name":"madhu",
+     "category":"IT",
+     "color":"white"
+     "price":1500
+   }
+
+Binds the HTTP request body to a Java object. Commonly used with POST and PUT requests.
+
+@PostMapping("/users")
+public User saveUser(@RequestBody User user) {
+return userService.save(user);
+}
+
+4)HTTP Methods
+--------------
+   1) @GetMapping - GET - Retrieves data from the server
+
+   2) @PostMapping -POST- Sends data to the server
+
+   3) @PutMapping- PUT- Updates existing data
+
+   4) @DeleteMapping -DELETE- Deletes data
+
+   5) @PatchMapping - PATCH - Partial update(eg: only update any one column of one record)
+
+5)RequestMapping
+-----------------
+Map's HTTP requests into controller classes or methods. Defines the Base URL path for the request handling.
+Eg: 1) controller ---- @RequestMapping("/api")
+                     public class ApiContoller{
+                     }
+    2)Methods ----- @RequestMapping("/{"category"}") --@PathVariable
+                    public List<Order> getByCategory(@PathVariable String category)
+                    {
+                      returns orderRepository.fetchBycategory(category);
+                    }
+
+6)@PathVariable
+----------------
+Extracts values form URI and binds them to method param.
+eg: @GetMapping("/users/{id}")
+    public User getUser(@PathVariable int id) {
+    return userService.getUser(id);
+    }
+
+7)RequestParam
+---------------
+- Reads querey params from the request URL.
+- Used for optional or filtering
+
+eg:@GetMapping("/search")
+   public String search(@RequestParam String keyword) {
+   return keyword;
+   }
+
+8)@service - business logic
+9)@component - mark java class as a bean --class level
+10)@bean - method level bean
+11)@PostConstruct  - method level - executes after bean is initialized
+12)
+
+###############################################################
+Configuration and Properties Annotations
+###############################################################
+1)@Value
+---------
+Read values form application.properties or application.yml
+
+eg :
+    @Value("${server.port}")
+    private String port;
+
+2) @ConfigurationProperties - Binds a group of related configuration properties to a POJO in a type-safe manner.
+
+   @ConfigurationProperties(prefix = "app")
+   public class AppConfig {
+   private String name;
+   }
+
+
+
+##############################################################################
+Validation Annotations - Validation annotations ensure input data correctness
+#############################################################################
+
+1) @NotNull - Field value must not be null
+2) @NotBlank - String must contain at least one non-whitespace character
+3) @Email - Validates email format
+4) @Size - Restricts field length or size
+
+eg :
+    public class User {
+    @NotBlank
+    private String username;
+    @Email
+    private String email;
+    }
+
+
+###########################################
+Exception Handling Annotations
+############################################
+
+1)@ControllerAdvice
+---------------------
+centralized exception handler - global for across all controllers
+
+eg: @ControllerAdvice
+    public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
+
+        @Autowired
+        private MadhuLogging  madhuLogging;
+
+        private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+        @ExceptionHandler(NotFoundCustomException.class)
+        protected  ResponseEntity<Object> notFoundCustomException(NotFoundCustomException e){
+            log.error(e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponseDto(NotFoundCustomException.ERROR_TYPE, e.getMessage()));
+        }
+
+    }
+
+2)@ExceptionHandler
+---------------------
+ Handles specific exceptions within a controller. Allows custom error responses for exceptions.
+
+   @ExceptionHandler(Exception.class)
+   public String handleException() {
+   return "Error occurred";
+   }
+
+
+
+##################################################
+JPA and Database Annotations
+#################################################
+1)@Entity : Marks a class as JPA entity
+2)@Table : Table mapping(@table(name="order-tbl"))
+3)@Data    : lombok---getters and setters
+4)@Id      : Defines primary key
+5)@GeneratedValue : Auto generates PK values in increasing order
+6)@column : Maps class field to table column
+        eg :  @Column(name = "namespace", columnDefinition = "jsonb")
+             private String namespace;
+
+7)@Repository : interface - Used in the DAO layer to interact with the database. Automatically translates database-related exceptions into Spring exceptions.
+      eg:
+          @Repository
+          public class UserRepository {
+          }
+
+8)@Repository
+  public interface tsetingRepository extends PagingAndSortingRepository<Event, String>, CrudRepository<Event, String> {
+        @Query(value = "SELECT max(a.seq) from Event a")
+
+9)@Transactional :
+
+- annotation Automatically starts a transaction when a method is called.
+- Commits the transaction if the method completes successfully.
+- Rolls back the transaction if a runtime exception occurs.
+- Reduces boilerplate transaction-handling code.
+
+Transaction management is the process of coordinating database operations to follow the ACID properties:
+  1.Atomicity: All or nothing.
+  2.Consistency: Database remains valid before and after transaction.
+  3.Isolation: Concurrent transactions do not affect each other.
+  4.Durability: Changes persist even after system failures.
+
+
+########################################################
+SpringSecurity ----Important
+#######################################################
+
+
+
+
+
+
+
+
+
+
+
+10)@ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
+11)@JoinTable(
+               name="users_groups",
+               joinColumns = @JoinColumn(name = "group_id"),
+               inverseJoinColumns = @JoinColumn(name = "username")
+       )
+12)@EqualsAndHashCode.Exclude
+13)@ToString.Exclude
+14)@JsonIgnoreProperties(value="usergrp")
+
+
+
+
+
+
+
+

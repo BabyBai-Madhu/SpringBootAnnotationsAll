@@ -1,0 +1,80 @@
+//package com.example.SpringBootAnnotations.security;
+//
+//
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+//import org.springframework.security.config.http.SessionCreationPolicy;
+//import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+//import org.springframework.security.web.SecurityFilterChain;
+//
+//@Configuration
+//public class SecurityWithRole {
+//
+//    // Password encryption
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    // Authentication
+//    @Bean
+//    public UserDetailsService userDetailsService(
+//            PasswordEncoder passwordEncoder) {
+//
+//        UserDetails user = User.builder()
+//                .username("madhu")
+//                .password(passwordEncoder.encode("madhu123"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(passwordEncoder.encode("admin123"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
+//
+//    // Authorization
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(
+//            HttpSecurity http) throws Exception {
+//
+//        http
+//                .csrf(csrf -> csrf.disable())
+//
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+//
+//
+//                .authorizeHttpRequests(auth -> auth
+//
+//                        // Only ADMIN can get all orders //if u use user credentials forbidden 403//use admin credentials
+//                        .requestMatchers("/order")
+//                        .hasRole("ADMIN")
+//
+//                        // USER and ADMIN can search by category // both
+//                        .requestMatchers("/order/*")
+//                        .hasAnyRole("USER", "ADMIN")
+//
+//                        // Other APIs require authentication
+//                        .anyRequest().authenticated()
+//                )
+//
+//                .httpBasic(basic -> {});
+//
+//        return http.build();
+//    }
+//}
+
+
+//login page -----for /oder give above admin credentials sice it has hasRole("ADMIn")
+                 for /order/{category} ---USER and ADMIn both works

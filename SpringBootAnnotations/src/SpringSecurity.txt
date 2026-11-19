@@ -1,0 +1,9 @@
+https://www.geeksforgeeks.org/advance-java/spring-security-tutorial/
+
+Spring Security
+---------------
+Secure/protect Java applications by providing authentication and authorization features.
+
+1)Authentication : Login via gmail,username/pass
+2)Authorization: What action we can perform based on role access.
+
