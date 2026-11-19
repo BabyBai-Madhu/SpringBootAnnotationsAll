@@ -80,7 +80,7 @@ eg:@GetMapping("/search")
 9)@component - mark java class as a bean --class level
 10)@bean - method level bean
 11)@PostConstruct  - method level - executes after bean is initialized
-12)
+
 
 ###############################################################
 Configuration and Properties Annotations
@@ -215,6 +215,41 @@ SpringSecurity ----Important
 12)@EqualsAndHashCode.Exclude
 13)@ToString.Exclude
 14)@JsonIgnoreProperties(value="usergrp")
+
+
+-----------------------------------
+@Qualifier vs @primary--------imp*
+-------------------------------
+ both @Primary and @Qualifier are used to resolve Bean Ambiguity when multiple beans of the same type are available.
+
+The main difference:
+
+@Primary → Defines which bean should be selected by default.
+
+@Qualifier → Specifies exactly which bean you want to inject.
+
+
+Eg : I have one interface having one abstract method(shopping interface and order is abstract is method), I have 2 class implementing  same shopping interface and giving 2 diff implementations for same abstract method.
+      At this time it is ambiguity.
+
+    eg :   Class myntra implements Shopping
+            {
+              void order(){
+              sysout("class A");
+              }
+            }
+           @primary
+           Class meesho implements Shopping
+           {
+            void order(){
+                  sysout("class A");
+             }
+           }
+
+           @Autowire  ---ambuguity ---to avoi dthis use @primary on above cany one class for default or in below @Autowire use @Qualifier for explicit class mention.
+           @Qualifier("mynthra")
+           Shopping shopping;
+
 
 
 
