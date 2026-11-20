@@ -4,6 +4,47 @@ Spring Security
 ---------------
 Secure/protect Java applications by providing authentication and authorization features.
 
-1)Authentication : Login via gmail,username/pass
+1)Authentication : Login via gmail,username/pass --every time login if no jwt token
 2)Authorization: What action we can perform based on role access.
 
+
+JWT Token (Json web token)
+----------------------------
+  only give username/pass once and generate token.
+
+  -Access token: Used to access protected APIs(username/pass once).
+                 example: It may expire in 15 minutes.
+
+  -Refresh token: Used to obtain a new access token without asking the user to log in again.
+                  - It generally has a longer expiry.
+
+  - JWT flow – Client vs Server
+  -------------------------------
+   1. Client → Server: Client sends username/password; server validates credentials, generates access and refresh tokens, and sends them back. Client securely stores both tokens.
+
+   2. For subsequent requests: Client sends the access token in the Authorization header. Server validates it; when expired, client sends the refresh token to get a new access token.
+
+
+
+       3-main components/structures (final token has 3components with dots)
+       ---------------------------
+       Header. Payload. Signature
+
+       1) Header
+       {
+           "alg": "HS256",
+           "typ": "JWT"
+       }
+
+      2)Payload
+      {
+          "userId": 123,
+          "role": "admin",
+          "exp": 1672531199
+      }
+
+      3)Signature
+      HMACSHA256(
+          base64UrlEncode(header) + "." + base64UrlEncode(payload),
+          secret
+      )

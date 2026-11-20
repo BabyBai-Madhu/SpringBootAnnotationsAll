@@ -76,9 +76,38 @@ eg:@GetMapping("/search")
    return keyword;
    }
 
-8)@service - business logic
-9)@component - mark java class as a bean --class level
-10)@bean - method level bean
+8)@Service - business logic
+
+9)@Configuration - Class level with @Bean
+                 - It tells spring that this class has configuration
+
+---------imp below 2--------
+9)@Component - class level
+              - Tell spring to create object automatically by scanning the packages and manage IOC lifecycle.
+
+10)@Bean - method level bean
+         - @Bean tells spring that am explicitly creating an object,so pls take care of this object lifecycle in IOC container.
+                      - Make it available whenever dependency injection is needed.
+         - Works with @Configuration only ------imp
+
+         -  config level
+           │     ├── KafkaConfig.java
+           │     ├── RedisConfig.java
+           │     └── SecurityConfig.java  or application.properties
+
+         eg: @Configuration
+             public class KafkaConfig {
+
+                 @Bean
+                 public KafkaTemplate<String, String> kafkaTemplate(
+                         ProducerFactory<String, String> producerFactory) {
+
+                     return new KafkaTemplate<>(producerFactory);
+                 }
+             }
+
+
+
 11)@PostConstruct  - method level - executes after bean is initialized
 
 
@@ -192,19 +221,6 @@ Transaction management is the process of coordinating database operations to fol
   4.Durability: Changes persist even after system failures.
 
 
-########################################################
-SpringSecurity ----Important
-#######################################################
-
-
-
-
-
-
-
-
-
-
 
 10)@ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
 11)@JoinTable(
@@ -252,9 +268,27 @@ Eg : I have one interface having one abstract method(shopping interface and orde
 
 
 
+What is Dependency Injection and types
+-----------------------------------------
+Automatically creates the object for the classes avoid tight couple.
+
+IoC → Spring controls object creation and management.
+
+DI → Spring provides the required objects to classes.
+
+DI types
+-----------
+1. constructor -
+2. setter
+3. filed
 
 
 
+
+
+
+JWT token
+-----------
 
 
 
