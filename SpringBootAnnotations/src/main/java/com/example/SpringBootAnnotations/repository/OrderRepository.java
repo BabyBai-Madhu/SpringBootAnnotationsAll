@@ -11,3 +11,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
    List<Order> findByCategory(String category);
 
 }
+
+//Without JPA how to connect DB
+    //Without JPA, we can connect to a database using hibernate or Spring JdbcTemplate.
