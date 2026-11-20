@@ -1,0 +1,13 @@
+What is Dependency Injection and types
+-----------------------------------------
+Automatically creates the object for the classes avoid tight couple.
+
+IoC → Spring controls object creation and management.
+
+DI → Spring provides the required objects to classes.
+
+DI types
+-----------
+1. constructor -
+2. setter
+3. filed
