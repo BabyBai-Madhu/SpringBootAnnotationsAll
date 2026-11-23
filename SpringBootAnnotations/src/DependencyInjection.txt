@@ -1,13 +1,101 @@
 What is Dependency Injection and types
 -----------------------------------------
-Automatically creates the object for the classes avoid tight couple.
 
 IoC → Spring controls object creation and management.
 
-DI → Spring provides the required objects to classes.
 
-DI types
+Dependency Injection
+---------------------------
+- To initialize the objects/properties present in the bean class
+- When class A depends on  class B  ---tight couple
+-  to make it loosely coupled DI is introduced
+
+public class A{
+    B b = new B();   // tightcouple
+     }
+
+public class B{
+
+}
+
+ //use @Autowire as dependency injection for loose couple
+@Component
+public class A {
+    @Autowired   //loose couple
+    B b;
+}
+
+@Component
+public class B {
+
+}
+
+------------
+3 types
 -----------
-1. constructor -
-2. setter
-3. filed
+
+1) Constructor Injection (recommended)
+eg :
+  @Component
+  class A{
+       B b;
+      public  A(B b){   ////constructor
+       this.b=b;
+       }
+  }
+  @Component
+  class B{
+
+  }
+---------------
+2) Setter Injection
+----------------
+ @Component
+  class A{
+       B b;
+     public  void  setB(B b){  //////////setter method
+       this.b=b;
+       }
+  }
+  @Component
+  class B{
+
+  }
+
+3) Field Injection (@Autowired) ----we can use for above types also
+
+@Component
+public class A {
+
+    @Autowired
+    B b;
+}
+
+@Component
+public class B {
+}
+
+
+
+why constructor injection is better
+----------------------
+
+Engine is mandatory. A car cannot function without an engine. → Constructor Injection.
+
+Music system is optional. A car can function without a music system. → Setter Injection.
+
+Bean Scopes:
+-----------------
+
+Singleton: A single shared instance across the application (default scope).
+Prototype: A new instance is created each time the bean is requested.
+Request: A new instance is created for each HTTP request (used in web apps).
+Session: A new instance is created for each HTTP session.
+
+
+Bean Life cycle
+--------------------
+- BeanCreation->injection->initialization->usage->destruction.
+    - injection ---setters and constructor
+    - initialization ---Prepares the bean for use
+    - Constructor is part of object creation, whereas @PostConstruct is used for the initialization phase of the Spring bean life cycle.
